@@ -4,16 +4,14 @@ import { openAuth } from './auth.js';
 let roadmapBills = [];
 let debtList = [];
 let committed = 0;
-let userPlan = 'GUEST'; // Default tier security status
+let userPlan = 'GUEST';
 
-// Format inputs cleanly as cash values ($1,250.00)
 function formatCurrency(i) {
     let v = i.value.replace(/\D/g, "");
     v = (v / 100).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
     i.value = v === '$0.00' ? '' : v;
 }
 
-// Convert input text string back to raw float number for mathematical formulas
 function parseVal(s) {
     return parseFloat(s.replace(/[$,]/g, "")) || 0;
 }
@@ -67,7 +65,7 @@ function addBill() {
     const a = parseVal(document.getElementById('bill-amt').value);
     const d = document.getElementById('bill-due').value;
     if (!n || !a || !d) return;
-    roadmapBills.push({ name: n, amt: a, due: new Date(d), paid: [] });
+    roadmapBills.push({ name: n, amt: a, due: new Date(d + 'T00:00:00'), paid: [] });
     document.getElementById('bill-name').value = '';
     document.getElementById('bill-amt').value = '';
     document.getElementById('bill-due').value = '';
@@ -105,7 +103,7 @@ function renderRoadmap() {
     const nextPay = nextPayStr ? new Date(nextPayStr + 'T00:00:00') : new Date();
     
     roadmapBills.forEach((b, i) => {
-        const dueDate = new Date(b.due + 'T00:00:00');
+        const dueDate = new Date(b.due);
         const today = new Date();
         today.setHours(0,0,0,0);
         
@@ -155,15 +153,12 @@ function renderRoadmap() {
     });
 }
 
-// THE INTER-CONNECTED MATH ENGINE
 function runCalc() {
-    // 1. Snapshot Interlock -> Live Disposable Balance
     const inc = parseVal(document.getElementById('in-income').value);
     const bill = parseVal(document.getElementById('in-bills').value);
     const days = +document.getElementById('in-days').value || 14;
     const stateB = +document.getElementById('in-state').value || 1.0;
     
-    // Core Formula Syncing Dynamic Bill-Slicing
     const safe = (inc - bill) - committed;
     const burn = safe / days;
     
@@ -190,11 +185,9 @@ function runCalc() {
         }
     }
     
-    // 2. Pro Annual Velocity Interlock -> Pro Debt Stack
     const yearly = parseVal(document.getElementById('in-annual').value);
     const totalDebt = debtList.reduce((acc, curr) => acc + curr.amt, 0);
     
-    // Calculate Debt-to-Income Safety Index Matrix
     const ratio = (totalDebt / (yearly || 1)) * 100;
     const bar = document.getElementById('ratio-bar');
     const label = document.getElementById('ratio-label');
@@ -223,7 +216,7 @@ async function saveToCloud() {
         return;
     }
     if (userPlan === 'GUEST' || userPlan === 'ESSENTIAL') {
-        alert("Cloud syncing profile profiles requires a Founding Starter or Pro Pass status.");
+        alert("Cloud syncing profile updates requires a Founding Starter or Pro Pass status.");
         document.getElementById('pricing').scrollIntoView({ behavior: 'smooth' });
         return;
     }
@@ -240,7 +233,6 @@ async function saveToCloud() {
     else alert("Vault Synced Successfully!");
 }
 
-// SECURITY GATEWAY: TIERS ACCESS MATRIX CONTROL
 async function checkUser() {
     const { data: { user } } = await sb.auth.getUser();
     if (user) {
@@ -250,3 +242,14 @@ async function checkUser() {
             document.getElementById('signout-btn').onclick = () => sb.auth.signOut().then(() => location.reload());
         }
         
+        const { data: profile } = await sb.from('profiles').select('*').eq('id', user.id).single();
+        userPlan = (profile && profile.plan) ? profile.plan.toUpperCase() : 'ESSENTIAL';
+        
+        const badge = document.getElementById('plan-badge');
+        if (badge) {
+            badge.style.display = 'block';
+            badge.innerText = userPlan;
+        }
+
+        if (userPlan === 'ESSENTIAL') {
+            document.querySelectorAll('.pro-feat, #annual-box').forEach(el => el.classList.remove('unlocked'));
