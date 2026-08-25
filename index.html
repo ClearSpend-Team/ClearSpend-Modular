@@ -38,7 +38,7 @@
         </div>
         <div id="nav-auth" style="display:flex; align-items:center; gap:15px;">
             <div id="plan-badge" class="status-badge">GUEST</div>
-            <button id="nav-signin-btn" class="btn-secondary" style="background:none; cursor:pointer;">Sign In</button>
+            <button id="auth-btn" class="btn-secondary" style="background:none; cursor:pointer;">Sign In</button>
         </div>
     </nav>
 
@@ -72,7 +72,7 @@
                         <option value="15">Semi-Monthly</option>
                         <option value="30">Monthly</option>
                     </select>
-                    <div class="glass-lock" id="lock-freq"><div class="upgrade-tag tier-lock-trigger">Starter Required</div></div>
+                    <div class="glass-lock" id="lock-freq"><div class="upgrade-tag tier-scroll-link">Starter Required</div></div>
                 </div>
                 
                 <label class="input-label">Fixed Bills</label>
@@ -80,7 +80,7 @@
                 
                 <label class="input-label">Countdown (Days)</label>
                 <input type="number" id="in-days" value="14">
-                <button id="cloud-sync-btn" class="btn-primary" style="width: 100%; padding: 12px; font-size: 14px;">Secure Sync</button>
+                <button id="secure-sync-btn" class="btn-primary" style="width: 100%; padding: 12px; font-size: 14px;">Secure Sync</button>
             </section>
 
             <section class="card col-4 pro-feat" id="annual-box">
@@ -101,7 +101,7 @@
                     <div id="ratio-label" style="font-weight: 900; font-size: 14px; margin-top:10px;">Status: Healthy</div>
                     <div class="bar-track"><div id="ratio-bar" class="bar-fill" style="background:var(--green)"></div></div>
                 </div>
-                <div class="glass-lock tier-lock-trigger"><div class="upgrade-tag">Pro Pass Required</div></div>
+                <div class="glass-lock tier-scroll-link"><div class="upgrade-tag">Pro Pass Required</div></div>
             </section>
 
             <section class="card col-8 pro-feat" id="debt-box">
@@ -109,10 +109,10 @@
                 <div style="display: flex; gap: 10px; margin: 15px 0;">
                     <input type="text" id="debt-name" placeholder="Debt Name" style="margin:0;">
                     <input type="text" id="debt-amt" placeholder="$0.00" style="margin:0;">
-                    <button id="add-debt-btn" class="btn-primary" style="padding:10px 20px;">Add</button>
+                    <button id="add-debt-action" class="btn-primary" style="padding:10px 20px;">Add</button>
                 </div>
                 <div id="debt-list" style="max-height:140px; overflow-y:auto;"></div>
-                <div class="glass-lock tier-lock-trigger"><div class="upgrade-tag">Unlock Debt Stack</div></div>
+                <div class="glass-lock tier-scroll-link"><div class="upgrade-tag">Unlock Debt Stack</div></div>
             </section>
 
             <section class="card col-12 pro-feat" id="roadmap-box">
@@ -121,10 +121,10 @@
                     <input type="text" id="bill-name" placeholder="Bill Name" style="margin:0;">
                     <input type="text" id="bill-amt" placeholder="$0.00" style="margin:0;">
                     <input type="date" id="bill-due" style="margin:0; width: 220px;">
-                    <button id="add-bill-btn" class="btn-primary">Add Bill</button>
+                    <button id="add-bill-action" class="btn-primary">Add Bill</button>
                 </div>
                 <div id="roadmap-list"></div>
-                <div class="glass-lock tier-lock-trigger"><div class="upgrade-tag">Unlock Bill Slicer</div></div>
+                <div class="glass-lock tier-scroll-link"><div class="upgrade-tag">Unlock Bill Slicer</div></div>
             </section>
         </div>
     </div>
