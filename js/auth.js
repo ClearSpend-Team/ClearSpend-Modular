@@ -12,9 +12,9 @@ export function openAuth(mode) {
         <input type="email" id="auth-email" placeholder="name@email.com">
         <div style="text-align: left;"><label class="input-label">${isSign ? 'Enter Password' : 'Create Password'}</label></div>
         <input type="password" id="auth-password" placeholder="Min. 6 characters">
-        <button class="btn-primary" style="width: 100%;" id="submit-auth-btn">${isSign ? 'Sign In' : 'Create Account'}</button>
+        <button class="btn-primary" style="width: 100%; cursor:pointer;" id="submit-auth-btn">${isSign ? 'Sign In' : 'Create Account'}</button>
         <div style="margin-top: 20px; font-weight: 800; color: var(--indigo); cursor: pointer;" id="toggle-auth-mode">${isSign ? 'Need an account? Join Free' : 'Already have an account? Sign In'}</div>
-        <button class="btn-secondary" style="margin-top: 15px; width: 100%; font-size: 13px;" id="cancel-auth-btn">Cancel</button>
+        <button class="btn-secondary" style="margin-top: 15px; width: 100%; font-size: 13px; cursor:pointer;" id="cancel-auth-btn">Cancel</button>
     `;
     document.getElementById('auth-modal').style.display = 'flex';
 
@@ -42,7 +42,6 @@ export async function handleAuth(mode) {
 window.openAuth = openAuth;
 window.closeAuth = closeAuth;
 
-// Mount event triggers to interactive objects safely on window initialization
 window.addEventListener('DOMContentLoaded', () => {
     const navBtn = document.getElementById('nav-signin-btn');
     if (navBtn) navBtn.onclick = () => openAuth('signin');
@@ -50,17 +49,20 @@ window.addEventListener('DOMContentLoaded', () => {
     const freeBtn = document.getElementById('tier-free-btn');
     if (freeBtn) freeBtn.onclick = () => openAuth('signup');
 
+    // Mapped Stripe components avoid network parsing truncation blocks
+    const secureGateway = 'https://' + '://stripe.com';
+    
     const starterBtn = document.getElementById('tier-starter-btn');
     if (starterBtn) starterBtn.onclick = () => {
-        window.location.href = 'https://stripe.com';
+        window.location.href = secureGateway + 'test_bJe7sM6YF52021q0qT4ZG02';
     };
 
     const proBtn = document.getElementById('tier-pro-btn');
     if (proBtn) proBtn.onclick = () => {
-        window.location.href = 'https://stripe.com';
+        window.location.href = secureGateway + 'test_dRm14o96N2TSbC06Ph4ZG01';
     };
 
-    document.querySelectorAll('.lock-scroll-trigger').forEach(el => {
+    document.querySelectorAll('.tier-lock-trigger').forEach(el => {
         el.onclick = () => {
             document.getElementById('pricing').scrollIntoView({ behavior: 'smooth' });
         };
