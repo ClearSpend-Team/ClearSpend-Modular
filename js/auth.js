@@ -43,28 +43,29 @@ window.openAuth = openAuth;
 window.closeAuth = closeAuth;
 
 window.addEventListener('DOMContentLoaded', () => {
-    const navBtn = document.getElementById('nav-signin-btn');
-    if (navBtn) navBtn.onclick = () => openAuth('signin');
+    const mainAuthBtn = document.getElementById('auth-btn');
+    if (mainAuthBtn) mainAuthBtn.onclick = () => openAuth('signin');
 
     const freeBtn = document.getElementById('tier-free-btn');
     if (freeBtn) freeBtn.onclick = () => openAuth('signup');
 
-    // Mapped Stripe components avoid network parsing truncation blocks
-    const secureGateway = 'https://' + '://stripe.com';
+    // Mapped Stripe routes safely handle parsing restrictions
+    const baseStripeLink = 'https://' + '://stripe.com';
     
     const starterBtn = document.getElementById('tier-starter-btn');
     if (starterBtn) starterBtn.onclick = () => {
-        window.location.href = secureGateway + 'test_bJe7sM6YF52021q0qT4ZG02';
+        window.location.href = baseStripeLink + 'test_bJe7sM6YF52021q0qT4ZG02';
     };
 
     const proBtn = document.getElementById('tier-pro-btn');
     if (proBtn) proBtn.onclick = () => {
-        window.location.href = secureGateway + 'test_dRm14o96N2TSbC06Ph4ZG01';
+        window.location.href = baseStripeLink + 'test_dRm14o96N2TSbC06Ph4ZG01';
     };
 
-    document.querySelectorAll('.tier-lock-trigger').forEach(el => {
+    document.querySelectorAll('.tier-scroll-link').forEach(el => {
         el.onclick = () => {
-            document.getElementById('pricing').scrollIntoView({ behavior: 'smooth' });
+            const pricingCard = document.getElementById('pricing');
+            if (pricingCard) pricingCard.scrollIntoView({ behavior: 'smooth' });
         };
     });
 });
